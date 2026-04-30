@@ -5,10 +5,10 @@ LDFLAGS ?= -lm
 BUILD := build
 BIN := $(BUILD)/sensorsim
 
-SRCS := src/sensorsim.c src/sensor.c src/fault.c src/golden.c
+SRCS := src/sensorsim.c src/sensor.c src/fault.c src/golden.c src/multifault.c
 OBJS := $(SRCS:src/%.c=$(BUILD)/%.o)
 
-TESTS := tests/test_sensor.c tests/test_fault.c tests/test_golden.c
+TESTS := tests/test_sensor.c tests/test_fault.c tests/test_golden.c tests/test_v4_multifault.c
 TEST_BINS := $(TESTS:tests/%.c=$(BUILD)/%)
 
 .PHONY: all test clean
@@ -30,6 +30,9 @@ $(BUILD)/test_fault: tests/test_fault.c src/fault.c src/sensor.c | $(BUILD)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(BUILD)/test_golden: tests/test_golden.c src/golden.c src/sensor.c src/fault.c | $(BUILD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+$(BUILD)/test_v4_multifault: tests/test_v4_multifault.c src/multifault.c src/fault.c | $(BUILD)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test: $(TEST_BINS)
